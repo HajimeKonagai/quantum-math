@@ -1,0 +1,90 @@
+.slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.bigEquation {
+  font-size: 2rem;
+  padding: 1.5rem 3rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  text-align: center;
+  color: var(--color-ket0);
+}
+
+.point {
+  font-size: 1.1rem;
+  max-width: 600px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.bitRow {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.bitBox {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: var(--font-mono);
+}
+
+.bit0 {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--slide-fg);
+}
+
+.bit1 {
+  background: rgba(255, 255, 255, 0.8);
+  color: #1e1e2e;
+}
+
+.bitLabel {
+  font-size: 0.85rem;
+  color: var(--color-ghost);
+  text-align: center;
+}
+
+.qubitBox {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.6));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--color-ket0);
+}
+
+.note {
+  font-size: 0.9rem;
+  color: var(--color-ghost);
+  max-width: 500px;
+  text-align: center;
+}

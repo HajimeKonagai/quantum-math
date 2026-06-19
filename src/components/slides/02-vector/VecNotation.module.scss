@@ -1,0 +1,82 @@
+.slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.notationGroup {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+}
+
+.notationBox {
+  padding: 1.2rem 2rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.notationLabel {
+  font-size: 0.8rem;
+  color: var(--color-ghost);
+}
+
+.bracketSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.bracketRow {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+}
+
+.bracketBox {
+  padding: 1.5rem 2.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--slide-border);
+  border-radius: 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.highlight {
+  border-color: var(--color-highlight);
+}
+
+.bracketLabel {
+  font-size: 0.85rem;
+  color: var(--color-accent);
+}
+
+.note {
+  font-size: 0.9rem;
+  color: var(--color-ghost);
+  max-width: 500px;
+  text-align: center;
+  line-height: 1.6;
+}

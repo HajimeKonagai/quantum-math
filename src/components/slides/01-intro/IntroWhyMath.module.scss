@@ -1,0 +1,136 @@
+.slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.questionText {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--color-highlight);
+}
+
+.crossBlock {
+  margin: 0.5rem 0;
+}
+
+.flowRow {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.6rem;
+}
+
+.mathLabel {
+  font-weight: bold;
+  color: var(--color-highlight);
+}
+
+.arrow {
+  color: var(--color-ghost);
+  font-size: 1.4rem;
+}
+
+.caption {
+  font-size: 0.95rem;
+  color: var(--color-ghost);
+  line-height: 1.6;
+}
+
+.sectionLabel {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--color-highlight);
+  margin-bottom: 0.5rem;
+}
+
+.phenomenaList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.phenomenaItem {
+  font-size: 1.05rem;
+  padding: 0.4rem 0.8rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+  border-left: 3px solid var(--color-ket0);
+}
+
+.adoptionFlow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.flowBox {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  font-size: 1.1rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.flowArrowBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.bigArrow {
+  font-size: 1.8rem;
+  color: var(--color-ghost);
+}
+
+.arrowLabels {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--color-ghost);
+}
+
+.toolList {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.toolItem {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-accent);
+  border-radius: 6px;
+  font-size: 1.05rem;
+  color: var(--color-accent);
+}
+
+.bigMessage {
+  font-size: 1.4rem;
+  line-height: 2;
+  font-weight: bold;
+}

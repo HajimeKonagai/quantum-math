@@ -1,0 +1,25 @@
+@use "variables";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+  background: var(--slide-bg);
+  color: var(--slide-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+// KaTeX overrides
+.katex {
+  font-size: 1em;
+}

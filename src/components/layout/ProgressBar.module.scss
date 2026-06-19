@@ -1,0 +1,9 @@
+.bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--color-highlight);
+  transition: width 0.3s ease;
+  z-index: 100;
+}

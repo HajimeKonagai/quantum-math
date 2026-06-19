@@ -1,0 +1,98 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.label {
+  font-size: 0.85rem;
+  color: var(--color-ghost);
+  min-width: 60px;
+}
+
+.matrixGrid {
+  display: inline-grid;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--slide-border);
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.cell {
+  width: 60px;
+  height: 36px;
+  background: var(--slide-bg);
+  border: 1px solid var(--slide-border);
+  border-radius: 4px;
+  color: var(--slide-fg);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-align: center;
+  outline: none;
+
+  &:focus {
+    border-color: var(--color-highlight);
+  }
+}
+
+.operator {
+  font-size: 1.4rem;
+  color: var(--color-ghost);
+  padding: 0 0.3rem;
+}
+
+.resultVector {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: rgba(252, 98, 85, 0.08);
+  border: 1px solid var(--color-result);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+.resultCell {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--color-result);
+  text-align: center;
+  min-width: 50px;
+}
+
+.formulaRow {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+}
+
+.presetRow {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.presetBtn {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--slide-border);
+  background: none;
+  color: var(--slide-fg);
+  font-size: 0.78rem;
+  font-family: var(--font-sans);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+
+  &:hover {
+    border-color: var(--color-highlight);
+  }
+}

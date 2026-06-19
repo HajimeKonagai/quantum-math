@@ -1,0 +1,48 @@
+.slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.formulaBox {
+  padding: 2rem 3rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.annotationGrid {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 1rem 2rem;
+  font-size: 1rem;
+}
+
+.annotationItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+}
+
+.annotationLabel {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-ghost);
+}

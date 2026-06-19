@@ -1,0 +1,45 @@
+.slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  justify-content: center;
+}
+
+.item {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.5rem 0.8rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+}
+
+.label {
+  font-size: 0.95rem;
+  min-width: 160px;
+  color: var(--color-accent);
+}
+
+.formula {
+  font-size: 1rem;
+}
+
+.note {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-ghost);
+  text-align: center;
+}

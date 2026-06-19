@@ -1,0 +1,16 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.cross {
+  position: absolute;
+  inset: -4px;
+  pointer-events: none;
+
+  line {
+    stroke: var(--color-result);
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+}

@@ -1,0 +1,17 @@
+// Manim カラー定数と対応
+:root {
+  --color-ket0: #58c4dd;      // BLUE   — |0⟩、第一成分
+  --color-ket1: #83c167;      // GREEN  — |1⟩、第二成分
+  --color-result: #fc6255;    // RED    — 結果・合成ベクトル
+  --color-highlight: #ffff00; // YELLOW — ハイライト
+  --color-ghost: #888888;     // GRAY   — 参照・ゴースト要素
+  --color-accent: #ff862f;    // ORANGE — アクセント
+
+  --slide-bg: #1e1e2e;
+  --slide-fg: #cdd6f4;
+  --slide-bg-lighter: #313244;
+  --slide-border: #45475a;
+
+  --font-sans: "Noto Sans JP", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+}

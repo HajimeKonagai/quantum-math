@@ -1,0 +1,31 @@
+{
+  "name": "quantum-slides",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
+    "katex": "^0.16.22",
+    "mafs": "^0.19.0",
+    "motion": "^12.12.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "@types/katex": "^0.16.7",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.6",
+    "@types/three": "^0.184.1",
+    "@vitejs/plugin-react": "^4.5.2",
+    "sass": "^1.89.1",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
+  }
+}

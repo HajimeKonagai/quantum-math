@@ -1,0 +1,140 @@
+.container {
+  display: flex;
+  gap: 1.5rem;
+  min-height: 460px;
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
+}
+
+.graphArea {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.controls {
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.sectionTitle {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-ghost);
+}
+
+.stateBox {
+  padding: 0.6rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stateRow {
+  display: flex;
+  justify-content: space-around;
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+}
+
+.aColor {
+  color: var(--color-ket0);
+}
+
+.bColor {
+  color: var(--color-ket1);
+}
+
+.resultColor {
+  color: var(--color-result);
+}
+
+.sliderRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sliderLabel {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  min-width: 20px;
+}
+
+.slider {
+  flex: 1;
+  accent-color: var(--color-highlight);
+}
+
+.sliderValue {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-ghost);
+  min-width: 48px;
+  text-align: right;
+}
+
+.resetBtn {
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--slide-border);
+  background: none;
+  color: var(--slide-fg);
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  align-self: flex-start;
+
+  &:hover {
+    border-color: var(--color-highlight);
+    background: rgba(255, 255, 0, 0.06);
+  }
+}
+
+.resultSection {
+  padding: 0.6rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.resultValue {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  text-align: center;
+  color: var(--color-result);
+}
+
+.resultDetail {
+  font-size: 0.78rem;
+  color: var(--color-ghost);
+  line-height: 1.5;
+  text-align: center;
+}
+
+.formulaBox {
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  text-align: center;
+}
