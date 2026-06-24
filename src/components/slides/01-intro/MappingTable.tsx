@@ -22,7 +22,7 @@ export function MappingTable() {
 
   const showMath = step >= 1;
   const showCS = step >= 2;
-  const cols = showCS ? styles.cols3 : showMath ? styles.cols2 : styles.cols2;
+  const cols = showCS ? styles.cols3 : showMath ? styles.cols2 : styles.cols1;
 
   return (
     <div className={styles.slide}>

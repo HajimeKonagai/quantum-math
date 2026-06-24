@@ -36,12 +36,12 @@ export function VecOperations() {
               <motion.div key="add" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <Graph2D width={360} height={280}>
                   <AnimatedVector tip={[2, 1]} color={RAW_KET0} weight={3} duration={0.5} />
-                  <MafsText x={2.2} y={0.6} size={14} color={RAW_KET0}>a</MafsText>
+                  <MafsText x={2.2} y={0.6} size={14} color={RAW_KET0}>|a⟩</MafsText>
                   <AnimatedVector tip={[1, 2]} color={RAW_KET1} weight={3} duration={0.5} delay={0.15} />
-                  <MafsText x={0.6} y={2.2} size={14} color={RAW_KET1}>b</MafsText>
+                  <MafsText x={0.6} y={2.2} size={14} color={RAW_KET1}>|b⟩</MafsText>
                   <AnimatedVector tail={[2, 1]} tip={[3, 3]} color={RAW_KET1} weight={1.5} opacity={0.5} duration={0.4} delay={0.4} />
                   <AnimatedVector tip={[3, 3]} color={RAW_RESULT} weight={4} duration={0.5} delay={0.6} />
-                  <MafsText x={3.3} y={3.2} size={14} color={RAW_RESULT}>a+b</MafsText>
+                  <MafsText x={3.5} y={3.2} size={14} color={RAW_RESULT}>|a⟩+|b⟩</MafsText>
                 </Graph2D>
               </motion.div>
             )}
@@ -51,9 +51,9 @@ export function VecOperations() {
               <motion.div key="scalar" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <Graph2D width={360} height={280}>
                   <Vector tip={[1, 1.5]} color={RAW_GHOST} weight={2} opacity={0.4} />
-                  <MafsText x={1.2} y={1.7} size={12} color={RAW_GHOST}>v</MafsText>
+                  <MafsText x={1.2} y={1.7} size={12} color={RAW_GHOST}>|v⟩</MafsText>
                   <AnimatedVector tip={[2, 3]} color={RAW_ACCENT} weight={3.5} duration={0.6} delay={0.2} />
-                  <MafsText x={2.3} y={3.1} size={14} color={RAW_ACCENT}>2v</MafsText>
+                  <MafsText x={2.3} y={3.1} size={14} color={RAW_ACCENT}>2|v⟩</MafsText>
                 </Graph2D>
               </motion.div>
             )}
@@ -76,7 +76,7 @@ export function VecOperations() {
 
                   {/* result */}
                   <AnimatedVector tip={[3, 2]} color={RAW_RESULT} weight={3.5} duration={0.5} delay={0.3} />
-                  <MafsText x={3.2} y={2.3} size={14} color={RAW_RESULT}>v</MafsText>
+                  <MafsText x={3.2} y={2.3} size={14} color={RAW_RESULT}>|v⟩</MafsText>
                 </Graph2D>
               </motion.div>
             )}
@@ -114,7 +114,7 @@ export function VecOperations() {
                 <div className={styles.point}>基底のスカラー倍 + 足し算</div>
                 <div className={styles.equation}>
                   <KMath
-                    tex={String.raw`\vec{v} = 3\begin{pmatrix}1\\0\end{pmatrix} + 2\begin{pmatrix}0\\1\end{pmatrix} = \begin{pmatrix}3\\2\end{pmatrix}`}
+                    tex={String.raw`| v \rangle = 3\begin{pmatrix}1\\0\end{pmatrix} + 2\begin{pmatrix}0\\1\end{pmatrix} = \begin{pmatrix}3\\2\end{pmatrix}`}
                     display
                   />
                 </div>
@@ -132,7 +132,7 @@ export function VecOperations() {
                 </div>
                 <div className={styles.equation} style={{ marginTop: "1rem" }}>
                   <KMath
-                    tex={String.raw`\begin{pmatrix}3\\2\end{pmatrix} = 3\begin{pmatrix}1\\0\end{pmatrix} + 2\begin{pmatrix}0\\1\end{pmatrix}`}
+                    tex={String.raw`| v \rangle = \begin{pmatrix}3\\2\end{pmatrix} = 3\begin{pmatrix}1\\0\end{pmatrix} + 2\begin{pmatrix}0\\1\end{pmatrix}`}
                     display
                   />
                 </div>

@@ -48,7 +48,7 @@ export function InnerProduct({ params }: { params: InnerProductParams }) {
   const arcR = 0.35;
 
   // Tex formulas
-  const dotTex = `\\vec{a} \\cdot \\vec{b} = ${fmtVal(ax)} \\cdot ${fmtVal(bx)} + ${fmtVal(ay)} \\cdot ${fmtVal(by)} = ${fmtVal(dot)}`;
+  const dotTex = `\\langle a | b \\rangle = ${fmtVal(ax)} \\cdot ${fmtVal(bx)} + ${fmtVal(ay)} \\cdot ${fmtVal(by)} = ${fmtVal(dot)}`;
   const cosTex = `\\cos\\theta = ${fmtVal(dot)}`;
 
   return (

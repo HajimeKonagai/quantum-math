@@ -23,7 +23,14 @@ interface Gate {
   label: string;
   /** Apply gate: (theta, phi) => [newTheta, newPhi] */
   apply: (t: number, p: number) => [number, number];
+  axis?: [number, number, number]; // Bloch coordinate rotation axis (unit vector)
+  angle?: number;                  // Rotation angle (radians)
 }
+
+type GatePhase =
+  | { type: "idle" }
+  | { type: "axis"; gate: Gate }
+  | { type: "rotating"; gate: Gate; startTheta: number; startPhi: number };
 
 // ── Data ──
 
@@ -36,13 +43,13 @@ const PRESETS: Preset[] = [
   { label: "|-i⟩", theta: Math.PI / 2, phi: -Math.PI / 2 },
 ];
 
+const INV_SQRT2 = 1 / Math.sqrt(2);
+
 const GATES: Gate[] = [
-  { label: "X", apply: (t, p) => [Math.PI - t, -p] },
-  { label: "Y", apply: (t, p) => [Math.PI - t, Math.PI - p] },
-  { label: "Z", apply: (t, p) => [t, p + Math.PI] },
+  { label: "X", apply: (t, p) => [Math.PI - t, -p], axis: [1, 0, 0], angle: Math.PI },
+  { label: "Y", apply: (t, p) => [Math.PI - t, Math.PI - p], axis: [0, 1, 0], angle: Math.PI },
+  { label: "Z", apply: (t, p) => [t, p + Math.PI], axis: [0, 0, 1], angle: Math.PI },
   { label: "H", apply: (t, p) => {
-    // Hadamard: rotation π around (X+Z)/√2 axis
-    // Bloch vector (sx, sy, sz) -> (sz, -sy, sx)
     const sx = Math.sin(t) * Math.cos(p);
     const sy = Math.sin(t) * Math.sin(p);
     const sz = Math.cos(t);
@@ -50,22 +57,19 @@ const GATES: Gate[] = [
     const nt = Math.acos(Math.max(-1, Math.min(1, nz)));
     const np = Math.atan2(ny, nx);
     return [nt, np];
-  }},
-  { label: "S", apply: (t, p) => [t, p + Math.PI / 2] },
-  { label: "T", apply: (t, p) => [t, p + Math.PI / 4] },
+  }, axis: [INV_SQRT2, 0, INV_SQRT2], angle: Math.PI },
+  { label: "S", apply: (t, p) => [t, p + Math.PI / 2], axis: [0, 0, 1], angle: Math.PI / 2 },
+  { label: "T", apply: (t, p) => [t, p + Math.PI / 4], axis: [0, 0, 1], angle: Math.PI / 4 },
   { label: "√X", apply: (t, p) => {
-    // √X = rotation π/2 around X axis
+    // Rotation by π/2 around X axis on the Bloch sphere
     const sx = Math.sin(t) * Math.cos(p);
     const sy = Math.sin(t) * Math.sin(p);
     const sz = Math.cos(t);
-    // Rx(π/2): (sx, sy, sz) -> (sx, sz, -sy)  (nah, let's compute properly)
-    const c = Math.cos(Math.PI / 4), s = Math.sin(Math.PI / 4);
-    const ny = c * sy - s * sz;
-    const nz = s * sy + c * sz;
-    const nt = Math.acos(Math.max(-1, Math.min(1, nz)));
-    const np = Math.atan2(ny, sx);
+    // Rx(π/2): (sx, sy, sz) → (sx, -sz, sy)
+    const nt = Math.acos(Math.max(-1, Math.min(1, sy)));
+    const np = Math.atan2(-sz, sx);
     return [nt, np];
-  }},
+  }, axis: [1, 0, 0], angle: Math.PI / 2 },
   { label: "Rset", apply: () => [0, 0] },
 ];
 
@@ -82,10 +86,39 @@ function blochToThree(bx: number, by: number, bz: number): [number, number, numb
   return [bx, bz, by];
 }
 
+// ── Rodrigues rotation ──
+
+/** Rotate Bloch vector (vx,vy,vz) around unit axis (ax,ay,az) by angle radians */
+function rodrigues(
+  vx: number, vy: number, vz: number,
+  ax: number, ay: number, az: number,
+  angle: number,
+): [number, number, number] {
+  const cosA = Math.cos(angle);
+  const sinA = Math.sin(angle);
+  const dot = vx * ax + vy * ay + vz * az;
+  // v*cos + (k x v)*sin + k*(k.v)*(1-cos)
+  const cx = ay * vz - az * vy;
+  const cy = az * vx - ax * vz;
+  const cz = ax * vy - ay * vx;
+  return [
+    vx * cosA + cx * sinA + ax * dot * (1 - cosA),
+    vy * cosA + cy * sinA + ay * dot * (1 - cosA),
+    vz * cosA + cz * sinA + az * dot * (1 - cosA),
+  ];
+}
+
+function blochFromSpherical(theta: number, phi: number): [number, number, number] {
+  return [
+    Math.sin(theta) * Math.cos(phi),
+    Math.sin(theta) * Math.sin(phi),
+    Math.cos(theta),
+  ];
+}
+
 // ── 3D Scene Components ──
 
 function BlochWireframe() {
-  // Equator: Bloch XY plane (bz=0) → Three.js XZ plane (y=0)
   const eqPoints: THREE.Vector3[] = [];
   for (let i = 0; i <= 64; i++) {
     const a = (i / 64) * Math.PI * 2;
@@ -93,9 +126,7 @@ function BlochWireframe() {
     eqPoints.push(new THREE.Vector3(tx, ty, tz));
   }
 
-  // Meridian in Bloch XZ plane (by=0)
   const merXZ: THREE.Vector3[] = [];
-  // Meridian in Bloch YZ plane (bx=0)
   const merYZ: THREE.Vector3[] = [];
   for (let i = 0; i <= 64; i++) {
     const a = (i / 64) * Math.PI * 2;
@@ -120,7 +151,6 @@ function BlochWireframe() {
 
 function Axes() {
   const len = 1.3;
-  // Bloch axis endpoints → Three.js coords
   const xEnd = blochToThree(len, 0, 0);
   const xNeg = blochToThree(-len, 0, 0);
   const yEnd = blochToThree(0, len, 0);
@@ -130,22 +160,16 @@ function Axes() {
 
   return (
     <>
-      {/* Bloch X axis (|+⟩ / |−⟩) */}
       <Line points={[xNeg, xEnd]} color="#666688" lineWidth={1} />
-      {/* Bloch Y axis (|i⟩ / |-i⟩) */}
       <Line points={[yNeg, yEnd]} color="#666688" lineWidth={1} />
-      {/* Bloch Z axis (|0⟩ / |1⟩) */}
       <Line points={[zNeg, zEnd]} color="#666688" lineWidth={1} />
 
-      {/* Axis labels */}
       <Billboard position={blochToThree(len + 0.15, 0, 0)}><Text fontSize={0.12} color="#888888">x</Text></Billboard>
       <Billboard position={blochToThree(0, len + 0.15, 0)}><Text fontSize={0.12} color="#888888">y</Text></Billboard>
 
-      {/* Basis state labels on Bloch Z axis */}
       <Billboard position={blochToThree(0, 0, 1.2)}><Text fontSize={0.15} color="#58c4dd">|0⟩</Text></Billboard>
       <Billboard position={blochToThree(0, 0, -1.2)}><Text fontSize={0.15} color="#83c167">|1⟩</Text></Billboard>
 
-      {/* Equator labels */}
       <Billboard position={blochToThree(1.2, 0, 0)}><Text fontSize={0.12} color="#aaaacc">|+⟩</Text></Billboard>
       <Billboard position={blochToThree(-1.2, 0, 0)}><Text fontSize={0.12} color="#aaaacc">|−⟩</Text></Billboard>
       <Billboard position={blochToThree(0, 1.2, 0)}><Text fontSize={0.12} color="#aaaacc">|i⟩</Text></Billboard>
@@ -154,15 +178,48 @@ function Axes() {
   );
 }
 
+function RotationAxisLine({ axis }: { axis: [number, number, number] }) {
+  const len = 1.3;
+  const [ax, ay, az] = axis;
+  const posEnd = blochToThree(ax * len, ay * len, az * len);
+  const negEnd = blochToThree(-ax * len, -ay * len, -az * len);
+
+  return (
+    <>
+      <Line
+        points={[negEnd, posEnd]}
+        color="#ffdd00"
+        lineWidth={2.5}
+      />
+      {/* Endpoint spheres */}
+      <mesh position={posEnd}>
+        <sphereGeometry args={[0.04, 12, 12]} />
+        <meshStandardMaterial color="#ffdd00" emissive="#ffdd00" emissiveIntensity={0.6} />
+      </mesh>
+      <mesh position={negEnd}>
+        <sphereGeometry args={[0.04, 12, 12]} />
+        <meshStandardMaterial color="#ffdd00" emissive="#ffdd00" emissiveIntensity={0.6} />
+      </mesh>
+    </>
+  );
+}
+
 const _yAxis = new THREE.Vector3(0, 1, 0);
 
-function StateArrow({ theta, phi }: { theta: number; phi: number }) {
+interface StateArrowProps {
+  theta: number;
+  phi: number;
+  /** When set, override position directly (skip slerp) */
+  overrideBloch?: [number, number, number] | null;
+}
+
+function StateArrow({ theta, phi, overrideBloch }: StateArrowProps) {
   const groupRef = useRef<THREE.Group>(null);
 
   // Bloch → Three.js target quaternion
-  const bx = Math.sin(theta) * Math.cos(phi);
-  const by = Math.sin(theta) * Math.sin(phi);
-  const bz = Math.cos(theta);
+  const bx = overrideBloch ? overrideBloch[0] : Math.sin(theta) * Math.cos(phi);
+  const by = overrideBloch ? overrideBloch[1] : Math.sin(theta) * Math.sin(phi);
+  const bz = overrideBloch ? overrideBloch[2] : Math.cos(theta);
   const [tx, ty, tz] = blochToThree(bx, by, bz);
   const targetDir = new THREE.Vector3(tx, ty, tz).normalize();
   const targetQuat = useRef(new THREE.Quaternion());
@@ -170,33 +227,77 @@ function StateArrow({ theta, phi }: { theta: number; phi: number }) {
 
   useFrame(() => {
     if (groupRef.current) {
-      // Slerp quaternion directly — handles antipodal directions correctly
-      groupRef.current.quaternion.slerp(targetQuat.current, 0.18);
+      if (overrideBloch) {
+        // During rotation animation: set quaternion directly (no slerp lag)
+        groupRef.current.quaternion.copy(targetQuat.current);
+      } else {
+        // Normal: slerp for smooth transitions
+        groupRef.current.quaternion.slerp(targetQuat.current, 0.18);
+      }
     }
   });
 
-  // Arrow built along +Y (cylinder/cone default axis)
   const shaftLen = 0.85;
 
   return (
     <group ref={groupRef}>
-      {/* Shaft along +Y */}
       <mesh position={[0, shaftLen / 2, 0]}>
         <cylinderGeometry args={[0.02, 0.02, shaftLen, 8]} />
         <meshStandardMaterial color="#fc6255" />
       </mesh>
-      {/* Cone tip at top of shaft (cone points along +Y by default) */}
       <mesh position={[0, shaftLen + 0.075, 0]}>
         <coneGeometry args={[0.06, 0.15, 12]} />
         <meshStandardMaterial color="#fc6255" />
       </mesh>
-      {/* Tip sphere */}
       <mesh position={[0, shaftLen + 0.15, 0]}>
         <sphereGeometry args={[0.04, 12, 12]} />
         <meshStandardMaterial color="#fc6255" emissive="#fc6255" emissiveIntensity={0.5} />
       </mesh>
     </group>
   );
+}
+
+/** Drives the rotation animation progress inside the Canvas */
+function RotationAnimator({
+  gate,
+  startTheta,
+  startPhi,
+  onProgress,
+  onComplete,
+}: {
+  gate: Gate;
+  startTheta: number;
+  startPhi: number;
+  onProgress: (bloch: [number, number, number]) => void;
+  onComplete: () => void;
+}) {
+  const progressRef = useRef(0);
+  const duration = 0.6; // seconds
+  const completedRef = useRef(false);
+
+  const [sx, sy, sz] = blochFromSpherical(startTheta, startPhi);
+  const axis = gate.axis!;
+  const totalAngle = gate.angle!;
+
+  useFrame((_, delta) => {
+    if (completedRef.current) return;
+
+    progressRef.current = Math.min(1, progressRef.current + delta / duration);
+    const t = progressRef.current;
+    // Ease in-out
+    const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    const currentAngle = eased * totalAngle;
+
+    const [rx, ry, rz] = rodrigues(sx, sy, sz, axis[0], axis[1], axis[2], currentAngle);
+    onProgress([rx, ry, rz]);
+
+    if (t >= 1) {
+      completedRef.current = true;
+      onComplete();
+    }
+  });
+
+  return null;
 }
 
 function SphereShell() {
@@ -214,7 +315,24 @@ function SphereShell() {
   );
 }
 
-function Scene({ theta, phi }: { theta: number; phi: number }) {
+function Scene({
+  theta,
+  phi,
+  phase,
+  overrideBloch,
+  onRotationProgress,
+  onRotationComplete,
+}: {
+  theta: number;
+  phi: number;
+  phase: GatePhase;
+  overrideBloch: [number, number, number] | null;
+  onRotationProgress: (bloch: [number, number, number]) => void;
+  onRotationComplete: () => void;
+}) {
+  const showAxis = phase.type === "axis" || phase.type === "rotating";
+  const axisData = showAxis ? (phase as { gate: Gate }).gate.axis : null;
+
   return (
     <>
       <ambientLight intensity={0.6} />
@@ -222,7 +340,17 @@ function Scene({ theta, phi }: { theta: number; phi: number }) {
       <SphereShell />
       <BlochWireframe />
       <Axes />
-      <StateArrow theta={theta} phi={phi} />
+      {showAxis && axisData && <RotationAxisLine axis={axisData} />}
+      <StateArrow theta={theta} phi={phi} overrideBloch={overrideBloch} />
+      {phase.type === "rotating" && (
+        <RotationAnimator
+          gate={phase.gate}
+          startTheta={phase.startTheta}
+          startPhi={phase.startPhi}
+          onProgress={onRotationProgress}
+          onComplete={onRotationComplete}
+        />
+      )}
       <OrbitControls
         enablePan={false}
         enableZoom={true}
@@ -236,7 +364,6 @@ function Scene({ theta, phi }: { theta: number; phi: number }) {
 // ── Helpers ──
 
 function normAngle(a: number): number {
-  // Normalize to [-π, π]
   let v = a % (2 * Math.PI);
   if (v > Math.PI) v -= 2 * Math.PI;
   if (v < -Math.PI) v += 2 * Math.PI;
@@ -253,6 +380,8 @@ function fmtAngle(rad: number): string {
 export function BlochSphere({ params }: { params: BlochSphereParams }) {
   const [theta, setTheta] = useState(params.theta ?? 0);
   const [phi, setPhi] = useState(params.phi ?? 0);
+  const [phase, setPhase] = useState<GatePhase>({ type: "idle" });
+  const [overrideBloch, setOverrideBloch] = useState<[number, number, number] | null>(null);
 
   // Refs to avoid stale closures in gate handlers
   const thetaRef = useRef(theta);
@@ -260,11 +389,77 @@ export function BlochSphere({ params }: { params: BlochSphereParams }) {
   thetaRef.current = theta;
   phiRef.current = phi;
 
-  const handleGate = useCallback((gate: Gate) => {
-    const [nt, np] = gate.apply(thetaRef.current, phiRef.current);
-    setTheta(Math.max(0, Math.min(Math.PI, nt)));
-    setPhi(normAngle(np));
+  const phaseRef = useRef(phase);
+  phaseRef.current = phase;
+
+  const resetPhase = useCallback(() => {
+    setPhase({ type: "idle" });
+    setOverrideBloch(null);
   }, []);
+
+  const handleGate = useCallback((gate: Gate) => {
+    const currentPhase = phaseRef.current;
+
+    // Reset is always 1-click
+    if (!gate.axis) {
+      resetPhase();
+      const [nt, np] = gate.apply(thetaRef.current, phiRef.current);
+      setTheta(Math.max(0, Math.min(Math.PI, nt)));
+      setPhi(normAngle(np));
+      return;
+    }
+
+    if (currentPhase.type === "idle") {
+      // 1st click: show axis
+      setPhase({ type: "axis", gate });
+    } else if (currentPhase.type === "axis") {
+      if (currentPhase.gate.label === gate.label) {
+        // 2nd click on same gate: start rotation
+        setPhase({
+          type: "rotating",
+          gate,
+          startTheta: thetaRef.current,
+          startPhi: phiRef.current,
+        });
+      } else {
+        // Different gate: switch axis
+        setPhase({ type: "axis", gate });
+      }
+    } else if (currentPhase.type === "rotating") {
+      // Ignore clicks while rotating
+    }
+  }, [resetPhase]);
+
+  const handleRotationProgress = useCallback((bloch: [number, number, number]) => {
+    setOverrideBloch(bloch);
+  }, []);
+
+  const handleRotationComplete = useCallback(() => {
+    const p = phaseRef.current;
+    if (p.type === "rotating") {
+      const [nt, np] = p.gate.apply(p.startTheta, p.startPhi);
+      setTheta(Math.max(0, Math.min(Math.PI, nt)));
+      setPhi(normAngle(np));
+    }
+    setOverrideBloch(null);
+    setPhase({ type: "idle" });
+  }, []);
+
+  const handleSliderTheta = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    resetPhase();
+    setTheta(parseFloat(e.target.value));
+  }, [resetPhase]);
+
+  const handleSliderPhi = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    resetPhase();
+    setPhi(parseFloat(e.target.value));
+  }, [resetPhase]);
+
+  const handlePreset = useCallback((p: Preset) => {
+    resetPhase();
+    setTheta(p.theta);
+    setPhi(p.phi);
+  }, [resetPhase]);
 
   // Compute state info
   const cosHalf = Math.cos(theta / 2);
@@ -281,6 +476,9 @@ export function BlochSphere({ params }: { params: BlochSphereParams }) {
     ? `|\\psi\\rangle = ${alphaStr}|0\\rangle + ${phaseStr} \\cdot ${betaAbs}|1\\rangle`
     : `|\\psi\\rangle = ${alphaStr}|0\\rangle + ${betaAbs}|1\\rangle`;
 
+  // Active gate label for button highlight
+  const activeGateLabel = phase.type !== "idle" ? (phase as { gate: Gate }).gate.label : null;
+
   return (
     <div className={styles.container}>
       {/* 3D Canvas */}
@@ -289,7 +487,14 @@ export function BlochSphere({ params }: { params: BlochSphereParams }) {
           camera={{ position: [2.5, 1.8, 1.5], fov: 40 }}
           style={{ width: "100%", height: "100%" }}
         >
-          <Scene theta={theta} phi={phi} />
+          <Scene
+            theta={theta}
+            phi={phi}
+            phase={phase}
+            overrideBloch={overrideBloch}
+            onRotationProgress={handleRotationProgress}
+            onRotationComplete={handleRotationComplete}
+          />
         </Canvas>
       </div>
 
@@ -319,7 +524,7 @@ export function BlochSphere({ params }: { params: BlochSphereParams }) {
               max={Math.PI}
               step={0.01}
               value={theta}
-              onChange={(e) => setTheta(parseFloat(e.target.value))}
+              onChange={handleSliderTheta}
             />
             <span className={styles.sliderValue}>{fmtAngle(theta)}</span>
           </div>
@@ -332,7 +537,7 @@ export function BlochSphere({ params }: { params: BlochSphereParams }) {
               max={Math.PI}
               step={0.01}
               value={phi}
-              onChange={(e) => setPhi(parseFloat(e.target.value))}
+              onChange={handleSliderPhi}
             />
             <span className={styles.sliderValue}>{fmtAngle(phi)}</span>
           </div>
@@ -346,7 +551,7 @@ export function BlochSphere({ params }: { params: BlochSphereParams }) {
               <button
                 key={p.label}
                 className={styles.presetBtn}
-                onClick={() => { setTheta(p.theta); setPhi(p.phi); }}
+                onClick={() => handlePreset(p)}
               >
                 {p.label}
               </button>
@@ -361,7 +566,7 @@ export function BlochSphere({ params }: { params: BlochSphereParams }) {
             {GATES.map((g) => (
               <button
                 key={g.label}
-                className={styles.gateBtn}
+                className={`${styles.gateBtn} ${activeGateLabel === g.label ? styles.gateBtnActive : ""}`}
                 onClick={() => handleGate(g)}
               >
                 {g.label}

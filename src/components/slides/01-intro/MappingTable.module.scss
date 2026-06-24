@@ -33,6 +33,10 @@
   overflow: hidden;
 }
 
+.cols1 {
+  grid-template-columns: auto;
+}
+
 .cols2 {
   grid-template-columns: auto auto;
 }

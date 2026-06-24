@@ -112,6 +112,12 @@
   }
 }
 
+.gateBtnActive {
+  border-color: #ffdd00;
+  background: rgba(255, 221, 0, 0.12);
+  box-shadow: 0 0 6px rgba(255, 221, 0, 0.3);
+}
+
 .stateDisplay {
   padding: 0.6rem;
   background: rgba(255, 255, 255, 0.03);

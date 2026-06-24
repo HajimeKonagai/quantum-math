@@ -3,6 +3,7 @@ import { Math } from "../../primitives/Math";
 import styles from "./PrerequisiteCheck.module.scss";
 
 const ITEMS = [
+  { label: "2進数", tex: "0011 \\rightarrow \\;?\\,,\\quad 1101 \\rightarrow \\;?" },
   { label: "四則演算・分配法則", tex: "(1 + 2) \\times 3 = \\;?" },
   { label: "変数・定数・分数", tex: "4y = x,\\; x = 2 \\;\\Rightarrow\\; y = \\;?" },
   { label: "絶対値", tex: "|-3| = \\;?" },

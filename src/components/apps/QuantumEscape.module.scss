@@ -1,0 +1,405 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+// ── Main 2-column layout ──
+
+.main {
+  display: flex;
+  gap: 1.2rem;
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
+}
+
+// ── Left: viz + controls ──
+
+.vizArea {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.chart {
+  width: 100%;
+  display: block;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+  border: 1px solid var(--slide-border);
+}
+
+// ── Step note ──
+
+.stepNote {
+  padding: 0.6rem 0.8rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+  border-left: 3px solid var(--color-accent);
+}
+
+.stepNoteTitle {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-highlight);
+  margin: 0 0 0.3rem 0;
+}
+
+.stepNoteBody {
+  font-size: 0.78rem;
+  color: var(--slide-fg);
+  margin: 0;
+  line-height: 1.5;
+}
+
+// ── Grover controls ──
+
+.groverControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.groverBtn {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--slide-border);
+  background: none;
+  color: var(--slide-fg);
+  font-size: 0.8rem;
+  font-family: var(--font-sans);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-highlight);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  &.primary {
+    background: rgba(255, 255, 0, 0.08);
+    border-color: var(--color-highlight);
+    color: var(--color-highlight);
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 0, 0.15);
+    }
+  }
+}
+
+.stepIndicator {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-ghost);
+  margin: 0 auto;
+}
+
+// ── Right: controls panel ──
+
+.controls {
+  flex: 0 0 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow-y: auto;
+
+  @media (max-width: 700px) {
+    flex: none;
+  }
+}
+
+.sectionTitle {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-ghost);
+  margin-bottom: 0.1rem;
+}
+
+// ── Preset selector ──
+
+.presetSelect {
+  width: 100%;
+  height: 30px;
+  background: var(--slide-bg);
+  border: 1px solid var(--slide-border);
+  border-radius: 4px;
+  color: var(--slide-fg);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  outline: none;
+  cursor: pointer;
+
+  &:focus {
+    border-color: var(--color-highlight);
+  }
+}
+
+// ── Rule list ──
+
+.ruleList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.ruleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--slide-fg);
+  padding: 0.25rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.rulePass {
+  color: var(--color-ket1);
+}
+
+.ruleFail {
+  color: var(--color-result);
+}
+
+.ruleText {
+  flex: 1;
+  min-width: 0;
+}
+
+.ruleDeleteBtn {
+  background: none;
+  border: none;
+  color: var(--color-ghost);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0 0.2rem;
+  line-height: 1;
+
+  &:hover {
+    color: var(--color-result);
+  }
+}
+
+// ── Add rule row ──
+
+.addRuleRow {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.addRuleSelect {
+  height: 26px;
+  background: var(--slide-bg);
+  border: 1px solid var(--slide-border);
+  border-radius: 4px;
+  color: var(--slide-fg);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  outline: none;
+  cursor: pointer;
+
+  &:focus {
+    border-color: var(--color-highlight);
+  }
+}
+
+.addRuleBtn {
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--slide-border);
+  background: none;
+  color: var(--color-ket1);
+  font-size: 1rem;
+  font-family: var(--font-mono);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    border-color: var(--color-ket1);
+    background: rgba(131, 193, 103, 0.1);
+  }
+}
+
+// ── Switch grid ──
+
+.switchGrid {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.switchBtn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--slide-border);
+  border-radius: 4px;
+  background: none;
+  color: var(--color-ghost);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  line-height: 1;
+
+  &:hover {
+    border-color: var(--color-highlight);
+  }
+
+  &.on {
+    background: rgba(131, 193, 103, 0.15);
+    border-color: var(--color-ket1);
+    color: var(--color-ket1);
+  }
+}
+
+.switchLabel {
+  font-size: 0.65rem;
+  opacity: 0.7;
+}
+
+.switchState {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-ghost);
+  margin-top: 0.15rem;
+}
+
+.constraintResult {
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  &.pass {
+    color: var(--color-ket1);
+  }
+
+  &.fail {
+    color: var(--color-result);
+  }
+}
+
+// ── Info grid ──
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+
+.infoItem {
+  padding: 0.35rem 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.infoLabel {
+  font-size: 0.65rem;
+  color: var(--color-ghost);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.infoValue {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--color-highlight);
+}
+
+// ── Answer reveal ──
+
+.revealBtn {
+  width: 100%;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--slide-border);
+  background: none;
+  color: var(--slide-fg);
+  font-size: 0.82rem;
+  font-family: var(--font-sans);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+
+  &:hover {
+    border-color: var(--color-accent);
+  }
+
+  &.revealed {
+    background: rgba(255, 134, 47, 0.12);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+}
+
+.answerList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.4rem;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.answerChip {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(131, 193, 103, 0.08);
+  border: 1px solid rgba(131, 193, 103, 0.2);
+  border-radius: 4px;
+  color: var(--color-ket1);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  text-align: left;
+
+  &:hover {
+    background: rgba(131, 193, 103, 0.18);
+    border-color: var(--color-ket1);
+  }
+
+  &.answerActive {
+    background: rgba(255, 255, 0, 0.1);
+    border-color: var(--color-highlight);
+    color: var(--color-highlight);
+  }
+}
+
+.answerBits {
+  font-size: 0.68rem;
+  color: var(--color-ghost);
+
+  .bitOn {
+    color: var(--color-ket1);
+    font-weight: 600;
+  }
+}
+
+.noAnswer {
+  font-size: 0.78rem;
+  color: var(--color-result);
+  padding: 0.3rem 0;
+}

@@ -1,0 +1,126 @@
+.slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.twoCol {
+  display: flex;
+  gap: 2rem;
+  flex: 1;
+  align-items: center;
+}
+
+.graphArea {
+  flex: 1;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.infoArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.point {
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.equation {
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.note {
+  font-size: 0.9rem;
+  color: var(--color-ghost);
+  line-height: 1.6;
+}
+
+.topicList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.topicItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.topicDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-ghost);
+  flex-shrink: 0;
+}
+
+.question {
+  font-size: 2rem;
+  color: var(--color-ghost);
+  text-align: center;
+  opacity: 0.5;
+}
+
+.mappingGrid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 0.4rem 0.8rem;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.mappingLabel {
+  text-align: right;
+  color: var(--color-ghost);
+}
+
+.mappingArrow {
+  color: var(--color-ghost);
+  text-align: center;
+}
+
+.mappingValue {
+  font-family: var(--font-mono);
+}
+
+.highlightBox {
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--color-highlight);
+  border-radius: 6px;
+  font-size: 1.1rem;
+  color: var(--color-highlight);
+  text-align: center;
+}
+
+.blochWrap {
+  width: 360px;
+  height: 340px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #111122;
+}

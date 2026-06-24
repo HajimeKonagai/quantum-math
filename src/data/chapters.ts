@@ -27,9 +27,16 @@ import { MatTransform } from "../components/slides/03-matrix/MatTransform";
 import { MatGates } from "../components/slides/03-matrix/MatGates";
 import { MatUnitary } from "../components/slides/03-matrix/MatUnitary";
 
+// 04-bloch
+import { BlochWhatIs } from "../components/slides/04-bloch/BlochWhatIs";
+import { BlochStates } from "../components/slides/04-bloch/BlochStates";
+import { BlochGates } from "../components/slides/04-bloch/BlochGates";
+import { BlochSummary } from "../components/slides/04-bloch/BlochSummary";
+
 const SectionIntro = createSectionTitle("はじめに", "量子と数学のつながり");
 const SectionVector = createSectionTitle("ベクトル", "状態を表す矢印");
 const SectionMatrix = createSectionTitle("行列", "状態を変換する装置");
+const SectionBloch = createSectionTitle("ブロッホ球", "量子状態の可視化");
 
 export const chapters: Chapter[] = [
   {
@@ -81,7 +88,7 @@ export const chapters: Chapter[] = [
       {
         id: "vec-definition",
         title: "ベクトルとは",
-        steps: 4,
+        steps: 2,
         component: VectorDefinition,
       },
       {
@@ -173,6 +180,42 @@ export const chapters: Chapter[] = [
         title: "ユニタリ変換",
         steps: 1,
         component: MatUnitary,
+      },
+    ],
+  },
+  {
+    id: "bloch",
+    title: "ブロッホ球",
+    slides: [
+      {
+        id: "section-bloch",
+        title: "ブロッホ球",
+        steps: 1,
+        component: SectionBloch,
+      },
+      {
+        id: "bloch-what-is",
+        title: "ブロッホ球とは",
+        steps: 2,
+        component: BlochWhatIs,
+      },
+      {
+        id: "bloch-states",
+        title: "状態を見る",
+        steps: 2,
+        component: BlochStates,
+      },
+      {
+        id: "bloch-gates",
+        title: "ゲートを見る",
+        steps: 3,
+        component: BlochGates,
+      },
+      {
+        id: "bloch-summary",
+        title: "量子コンピュータを見る",
+        steps: 3,
+        component: BlochSummary,
       },
     ],
   },

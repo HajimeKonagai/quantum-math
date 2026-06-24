@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Math } from "../primitives/Math";
+import { Math as KMath } from "../primitives/Math";
 import styles from "./MatrixCalc.module.scss";
 
 export interface MatrixCalcParams {
@@ -11,63 +11,141 @@ export interface MatrixCalcParams {
   title?: string;
 }
 
+// ── Complex number helpers ──
+
+type C = [number, number]; // [re, im]
+
+function cAdd(a: C, b: C): C {
+  return [a[0] + b[0], a[1] + b[1]];
+}
+
+function cMul(a: C, b: C): C {
+  return [a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0]];
+}
+
+const EPS = 1e-10;
+
+function fmtNum(n: number): string {
+  if (Math.abs(n - Math.round(n)) < EPS) return String(Math.round(n));
+  return n.toFixed(4).replace(/0+$/, "").replace(/\.$/, "");
+}
+
+function fmtC(c: C): string {
+  const [re, im] = c;
+  const hasRe = Math.abs(re) > EPS;
+  const hasIm = Math.abs(im) > EPS;
+  if (!hasRe && !hasIm) return "0";
+  if (hasRe && !hasIm) return fmtNum(re);
+  if (!hasRe) {
+    if (Math.abs(im - 1) < EPS) return "i";
+    if (Math.abs(im + 1) < EPS) return "-i";
+    return fmtNum(im) + "i";
+  }
+  let s = fmtNum(re);
+  if (Math.abs(im - 1) < EPS) s += "+i";
+  else if (Math.abs(im + 1) < EPS) s += "-i";
+  else if (im > 0) s += "+" + fmtNum(im) + "i";
+  else s += fmtNum(im) + "i";
+  return s;
+}
+
+function parseComplex(s: string): C {
+  s = s.trim().replace(/\s/g, "");
+  if (!s) return [0, 0];
+
+  // No imaginary part
+  if (!s.includes("i")) {
+    return [parseFloat(s) || 0, 0];
+  }
+
+  // Remove 'i' marker
+  s = s.replace(/i/g, "");
+
+  // Find the last +/- that splits real and imaginary parts (skip index 0)
+  let splitIdx = -1;
+  for (let k = s.length - 1; k > 0; k--) {
+    if (s[k] === "+" || s[k] === "-") {
+      splitIdx = k;
+      break;
+    }
+  }
+
+  if (splitIdx > 0) {
+    const re = parseFloat(s.slice(0, splitIdx)) || 0;
+    const imStr = s.slice(splitIdx);
+    let im: number;
+    if (imStr === "+" || imStr === "") im = 1;
+    else if (imStr === "-") im = -1;
+    else im = parseFloat(imStr) || 0;
+    return [re, im];
+  }
+
+  // Pure imaginary
+  if (s === "" || s === "+") return [0, 1];
+  if (s === "-") return [0, -1];
+  return [0, parseFloat(s) || 0];
+}
+
+// ── Presets ──
+
 interface Preset {
   label: string;
-  matrix: number[];
-  vector: number[];
+  matrix: C[];
+  vector: C[];
 }
+
+const S2 = 1 / Math.sqrt(2);
 
 const PRESETS: Preset[] = [
-  { label: "Identity (I)", matrix: [1, 0, 0, 1], vector: [1, 0] },
-  { label: "Pauli-X", matrix: [0, 1, 1, 0], vector: [1, 0] },
-  { label: "Pauli-Z", matrix: [1, 0, 0, -1], vector: [1, 0] },
-  {
-    label: "Hadamard (H)",
-    matrix: [0.7071, 0.7071, 0.7071, -0.7071],
-    vector: [1, 0],
-  },
+  { label: "I", matrix: [[1, 0], [0, 0], [0, 0], [1, 0]], vector: [[1, 0], [0, 0]] },
+  { label: "X", matrix: [[0, 0], [1, 0], [1, 0], [0, 0]], vector: [[1, 0], [0, 0]] },
+  { label: "Y", matrix: [[0, 0], [0, -1], [0, 1], [0, 0]], vector: [[1, 0], [0, 0]] },
+  { label: "Z", matrix: [[1, 0], [0, 0], [0, 0], [-1, 0]], vector: [[1, 0], [0, 0]] },
+  { label: "H", matrix: [[S2, 0], [S2, 0], [S2, 0], [-S2, 0]], vector: [[1, 0], [0, 0]] },
+  { label: "S", matrix: [[1, 0], [0, 0], [0, 0], [0, 1]], vector: [[1, 0], [0, 0]] },
+  { label: "T", matrix: [[1, 0], [0, 0], [0, 0], [S2, S2]], vector: [[1, 0], [0, 0]] },
+  { label: "√X", matrix: [[0.5, 0.5], [0.5, -0.5], [0.5, -0.5], [0.5, 0.5]], vector: [[1, 0], [0, 0]] },
 ];
 
-function fmt(n: number): string {
-  return Number.isInteger(n) ? String(n) : n.toFixed(4).replace(/0+$/, "").replace(/\.$/, "");
-}
+// ── Component ──
 
 export function MatrixCalc({ params }: { params: MatrixCalcParams }) {
-  const [matrix, setMatrix] = useState<number[]>(
-    params.matrix ?? [1, 0, 0, 1],
-  );
-  const [vector, setVector] = useState<number[]>(
-    params.vector ?? [1, 0],
-  );
+  const initMat = params.matrix ?? [1, 0, 0, 1];
+  const initVec = params.vector ?? [1, 0];
 
-  const updateMatrix = useCallback((idx: number, val: string) => {
-    setMatrix((m) => {
-      const next = [...m];
-      next[idx] = parseFloat(val) || 0;
+  const [matText, setMatText] = useState<string[]>(initMat.map(String));
+  const [vecText, setVecText] = useState<string[]>(initVec.map(String));
+
+  const updateMat = useCallback((idx: number, val: string) => {
+    setMatText((prev) => {
+      const next = [...prev];
+      next[idx] = val;
       return next;
     });
   }, []);
 
-  const updateVector = useCallback((idx: number, val: string) => {
-    setVector((v) => {
-      const next = [...v];
-      next[idx] = parseFloat(val) || 0;
+  const updateVec = useCallback((idx: number, val: string) => {
+    setVecText((prev) => {
+      const next = [...prev];
+      next[idx] = val;
       return next;
     });
   }, []);
 
   const applyPreset = useCallback((p: Preset) => {
-    setMatrix([...p.matrix]);
-    setVector([...p.vector]);
+    setMatText(p.matrix.map(fmtC));
+    setVecText(p.vector.map(fmtC));
   }, []);
 
-  // Matrix × Vector multiplication
-  const result = [
-    matrix[0] * vector[0] + matrix[1] * vector[1],
-    matrix[2] * vector[0] + matrix[3] * vector[1],
+  // Parse and compute
+  const matrix = matText.map(parseComplex);
+  const vector = vecText.map(parseComplex);
+  const result: C[] = [
+    cAdd(cMul(matrix[0], vector[0]), cMul(matrix[1], vector[1])),
+    cAdd(cMul(matrix[2], vector[0]), cMul(matrix[3], vector[1])),
   ];
 
-  const texFormula = String.raw`\begin{pmatrix} ${fmt(matrix[0])} & ${fmt(matrix[1])} \\ ${fmt(matrix[2])} & ${fmt(matrix[3])} \end{pmatrix} \begin{pmatrix} ${fmt(vector[0])} \\ ${fmt(vector[1])} \end{pmatrix} = \begin{pmatrix} ${fmt(result[0])} \\ ${fmt(result[1])} \end{pmatrix}`;
+  const texFormula = String.raw`\begin{pmatrix} ${fmtC(matrix[0])} & ${fmtC(matrix[1])} \\ ${fmtC(matrix[2])} & ${fmtC(matrix[3])} \end{pmatrix} \begin{pmatrix} ${fmtC(vector[0])} \\ ${fmtC(vector[1])} \end{pmatrix} = \begin{pmatrix} ${fmtC(result[0])} \\ ${fmtC(result[1])} \end{pmatrix}`;
 
   return (
     <div className={styles.container}>
@@ -97,14 +175,13 @@ export function MatrixCalc({ params }: { params: MatrixCalcParams }) {
           className={styles.matrixGrid}
           style={{ gridTemplateColumns: "1fr 1fr" }}
         >
-          {matrix.map((v, i) => (
+          {matText.map((v, i) => (
             <input
               key={i}
               className={styles.cell}
-              type="number"
-              step="any"
+              type="text"
               value={v}
-              onChange={(e) => updateMatrix(i, e.target.value)}
+              onChange={(e) => updateMat(i, e.target.value)}
             />
           ))}
         </div>
@@ -116,14 +193,13 @@ export function MatrixCalc({ params }: { params: MatrixCalcParams }) {
           className={styles.matrixGrid}
           style={{ gridTemplateColumns: "1fr" }}
         >
-          {vector.map((v, i) => (
+          {vecText.map((v, i) => (
             <input
               key={i}
               className={styles.cell}
-              type="number"
-              step="any"
+              type="text"
               value={v}
-              onChange={(e) => updateVector(i, e.target.value)}
+              onChange={(e) => updateVec(i, e.target.value)}
             />
           ))}
         </div>
@@ -133,7 +209,7 @@ export function MatrixCalc({ params }: { params: MatrixCalcParams }) {
         <div className={styles.resultVector}>
           {result.map((v, i) => (
             <div key={i} className={styles.resultCell}>
-              {fmt(v)}
+              {fmtC(v)}
             </div>
           ))}
         </div>
@@ -141,7 +217,7 @@ export function MatrixCalc({ params }: { params: MatrixCalcParams }) {
 
       {/* KaTeX formula display */}
       <div className={styles.formulaRow}>
-        <Math tex={texFormula} display />
+        <KMath tex={texFormula} display />
       </div>
     </div>
   );

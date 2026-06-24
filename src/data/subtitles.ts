@@ -46,10 +46,6 @@ export const subtitles: Record<string, string> = {
     "ベクトルとは「向き」と「大きさ」をもった矢印、いくつかの数字の組みです",
   "vec-definition:1":
     "各成分はx方向に3、y方向に2を表しています",
-  "vec-definition:2":
-    "ベクトルは足し算ができます — 合力として考えることができます",
-  "vec-definition:3":
-    "スカラー倍 — 数字をかけて大きさを変えることができます",
 
   // VecNotation
   "vec-notation:0":
@@ -154,6 +150,36 @@ export const subtitles: Record<string, string> = {
   // MatUnitary
   "mat-unitary:0":
     "全てのゲートはベクトルの長さを保ちます。確率の合計が1という約束を守るためです。",
+
+  // ── ブロッホ球 ──
+
+  // BlochWhatIs
+  "bloch-what-is:0":
+    "ここまでベクトル・行列・複素数を学んできました。しかし、これらを頭の中でイメージするのは大変です。",
+  "bloch-what-is:1":
+    "そこで登場するのがブロッホ球です。ブロッホ球は1量子ビットの状態を3次元で表現した図です。",
+
+  // BlochStates
+  "bloch-states:0":
+    "北極と南極に|0⟩と|1⟩。赤道上に|+⟩や|−⟩があります。北極と南極の間にも無数の状態があります。",
+  "bloch-states:1":
+    "|+⟩と|−⟩はどちらも50%50%です。しかしブロッホ球上では別の場所に存在します。つまり位相の違いが位置の違いとして見えるようになります。",
+
+  // BlochGates
+  "bloch-gates:0":
+    "量子ゲートはブロッホ球上では回転として表せます。",
+  "bloch-gates:1":
+    "例えばXゲートはX軸まわりに180°回転させます。",
+  "bloch-gates:2":
+    "Hゲートもある軸を中心とした回転として表せます。つまり行列でやっていた計算は、ブロッホ球では回転として見ることができます。",
+
+  // BlochSummary
+  "bloch-summary:0":
+    "ここまで学んだ内容をまとめると、状態はベクトル、操作は行列、位相は複素数、測定確率は内積でした。",
+  "bloch-summary:1":
+    "ブロッホ球では、これら全てが点・回転・角度として見えるようになります。",
+  "bloch-summary:2":
+    "ブロッホ球は動かしてみた方が理解が深まると思います。アプリを触って体感してみてください。",
 };
 
 export function getSubtitle(slideId: string, stepIndex: number): string | undefined {

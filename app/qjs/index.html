@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q.js Quantum Circuit Simulator</title>
+  <link rel="stylesheet" href="lib/q.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Quantum Circuit Simulator</h1>
+    <p class="subtitle">Powered by <a href="https://github.com/stewdio/q.js" target="_blank">Q.js</a></p>
+  </header>
+
+  <main>
+    <section class="panel preset-panel">
+      <h2>Preset Circuits</h2>
+      <div class="preset-buttons">
+        <button class="preset-btn active" data-preset="bell">Bell State</button>
+        <button class="preset-btn" data-preset="ghz">GHZ State</button>
+        <button class="preset-btn" data-preset="teleportation">Teleportation</button>
+        <button class="preset-btn" data-preset="grover">Grover (2-qubit)</button>
+        <button class="preset-btn" data-preset="deutsch">Deutsch-Jozsa</button>
+        <button class="preset-btn" data-preset="superposition">Superposition</button>
+      </div>
+      <div class="preset-description" id="preset-description"></div>
+    </section>
+
+    <section class="panel diagram-panel">
+      <h2>Circuit Diagram</h2>
+      <pre id="circuit-diagram"></pre>
+    </section>
+
+    <section class="panel results-panel">
+      <h2>Evaluation Results</h2>
+      <div id="results"></div>
+    </section>
+
+    <section class="panel editor-panel">
+      <h2>Interactive Editor</h2>
+      <p class="editor-hint">Click cells to place gates. Drag between qubits for controlled gates.</p>
+      <div id="circuit-editor"></div>
+      <div class="editor-controls">
+        <button id="btn-evaluate">Evaluate</button>
+        <button id="btn-clear">Clear</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="lib/q.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

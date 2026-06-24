@@ -1,0 +1,272 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+// ── Tabs ──
+
+.tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--slide-bg);
+  border-radius: 6px;
+  padding: 2px;
+  width: fit-content;
+}
+
+.tab {
+  padding: 0.4rem 1rem;
+  border: none;
+  background: none;
+  color: var(--color-ghost);
+  font-size: 0.85rem;
+  font-family: var(--font-sans);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    color: var(--slide-fg);
+  }
+
+  &.active {
+    background: var(--slide-border);
+    color: var(--color-highlight);
+  }
+}
+
+// ── Main layout ──
+
+.main {
+  display: flex;
+  gap: 1.5rem;
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
+}
+
+// ── Step content area (left) ──
+
+.stepContent {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  border: 1px solid var(--slide-border);
+  min-height: 320px;
+}
+
+.stepTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-highlight);
+  margin: 0;
+}
+
+.stepBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--slide-fg);
+  line-height: 1.6;
+}
+
+.formulaBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+  border-left: 3px solid var(--color-accent);
+}
+
+.keyBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+
+  &.public {
+    background: rgba(88, 196, 221, 0.12);
+    border: 1px solid rgba(88, 196, 221, 0.3);
+    color: var(--color-ket0);
+  }
+
+  &.secret {
+    background: rgba(252, 98, 85, 0.12);
+    border: 1px solid rgba(252, 98, 85, 0.3);
+    color: var(--color-result);
+  }
+}
+
+.hint {
+  font-size: 0.82rem;
+  color: var(--color-accent);
+  padding: 0.4rem 0.6rem;
+  background: rgba(255, 134, 47, 0.08);
+  border-radius: 4px;
+  border-left: 3px solid var(--color-accent);
+}
+
+.success {
+  font-size: 0.9rem;
+  color: var(--color-ket1);
+  font-weight: 600;
+}
+
+// ── Step navigation ──
+
+.stepNav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--slide-border);
+  margin-top: auto;
+}
+
+.navBtn {
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--slide-border);
+  background: none;
+  color: var(--slide-fg);
+  font-size: 0.82rem;
+  font-family: var(--font-sans);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-highlight);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+}
+
+.stepIndicator {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-ghost);
+  min-width: 40px;
+  text-align: center;
+}
+
+// ── Controls panel (right) ──
+
+.controls {
+  flex: 0 0 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media (max-width: 700px) {
+    flex: none;
+  }
+}
+
+.sectionTitle {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-ghost);
+  margin-bottom: 0.2rem;
+}
+
+.paramRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.paramLabel {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-ghost);
+  min-width: 28px;
+  text-align: right;
+}
+
+.paramInput {
+  width: 72px;
+  height: 32px;
+  background: var(--slide-bg);
+  border: 1px solid var(--slide-border);
+  border-radius: 4px;
+  color: var(--slide-fg);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-align: center;
+  outline: none;
+
+  &:focus {
+    border-color: var(--color-highlight);
+  }
+}
+
+.charInput {
+  width: 48px;
+}
+
+.derivedRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--slide-fg);
+}
+
+.derivedLabel {
+  color: var(--color-ghost);
+  min-width: 28px;
+  text-align: right;
+}
+
+.derivedValue {
+  color: var(--color-highlight);
+}
+
+.errorText {
+  font-size: 0.78rem;
+  color: var(--color-result);
+}
+
+// ── Reveal button (decrypt tab) ──
+
+.revealBtn {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--slide-border);
+  background: none;
+  color: var(--slide-fg);
+  font-size: 0.82rem;
+  font-family: var(--font-sans);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+
+  &:hover {
+    border-color: var(--color-accent);
+  }
+
+  &.revealed {
+    background: rgba(255, 134, 47, 0.12);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+}

@@ -50,7 +50,7 @@ function SlidePresenter() {
 
   return (
     <>
-      <SlideFrame chapterTitle={chapterTitle}>
+      <SlideFrame chapterTitle={chapterTitle} slideId={current.id} slideIndex={slideIndex} stepIndex={stepIndex}>
         <AnimatePresence mode="wait">
           <motion.div
             key={current.id}
