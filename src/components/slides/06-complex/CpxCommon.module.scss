@@ -1,0 +1,123 @@
+.slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.twoCol {
+  display: flex;
+  gap: 2rem;
+  flex: 1;
+  align-items: center;
+}
+
+.graphArea {
+  flex: 1;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.infoArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.point {
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.equation {
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.equationRow {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.note {
+  font-size: 0.9rem;
+  color: var(--color-ghost);
+  line-height: 1.6;
+}
+
+.label {
+  font-size: 0.8rem;
+  color: var(--color-ghost);
+  margin-top: 0.3rem;
+  text-align: center;
+}
+
+.highlightBox {
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--color-highlight);
+  border-radius: 6px;
+  font-size: 1.1rem;
+  color: var(--color-highlight);
+  text-align: center;
+}
+
+.bigFormula {
+  font-size: 1.4rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+.annotate {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.annotateLabel {
+  font-size: 0.75rem;
+  color: var(--color-ghost);
+}
+
+.decompRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.2rem;
+  font-family: var(--font-mono);
+}
+
+.partLabel {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.ghostText {
+  color: var(--color-ghost);
+  opacity: 0.4;
+}

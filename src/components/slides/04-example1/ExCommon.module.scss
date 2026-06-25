@@ -1,0 +1,104 @@
+.slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.twoCol {
+  display: flex;
+  gap: 2rem;
+  flex: 1;
+  align-items: center;
+}
+
+.graphArea {
+  flex: 1;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.infoArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.point {
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.note {
+  font-size: 0.9rem;
+  color: var(--color-ghost);
+  line-height: 1.6;
+}
+
+.equation {
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.highlightBox {
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--color-highlight);
+  border-radius: 6px;
+  font-size: 1.1rem;
+  color: var(--color-highlight);
+  text-align: center;
+}
+
+.randomTrack {
+  position: relative;
+  width: 60px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.trackLine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.trackLabel {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+}
+
+.trackDot {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  z-index: 2;
+}

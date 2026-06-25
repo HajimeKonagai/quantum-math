@@ -1,0 +1,111 @@
+.slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.point {
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.equation {
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.note {
+  font-size: 0.9rem;
+  color: var(--color-ghost);
+  line-height: 1.6;
+}
+
+.highlightBox {
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--color-highlight);
+  border-radius: 6px;
+  font-size: 1.1rem;
+  color: var(--color-highlight);
+  text-align: center;
+}
+
+/* ── BB84 actor diagram ── */
+
+.actorRow {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.actor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.actorIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.actorName {
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.arrow {
+  font-size: 1.6rem;
+  color: var(--color-ghost);
+}
+
+.basisList {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+}
+
+.basisGroup {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.speechBubble {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.95rem;
+  max-width: 400px;
+  text-align: center;
+}

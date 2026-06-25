@@ -1,0 +1,139 @@
+.slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.twoCol {
+  display: flex;
+  gap: 2rem;
+  flex: 1;
+  align-items: center;
+}
+
+.graphArea {
+  flex: 1;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.infoArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.point {
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.equation {
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.equationRow {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.note {
+  font-size: 0.9rem;
+  color: var(--color-ghost);
+  line-height: 1.6;
+}
+
+.highlightBox {
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--color-highlight);
+  border-radius: 6px;
+  font-size: 1.1rem;
+  color: var(--color-highlight);
+  text-align: center;
+}
+
+.bigFormula {
+  font-size: 1.4rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+.mappingTable {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 0.4rem 1.2rem;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.mappingArrow {
+  color: var(--color-ghost);
+}
+
+.bitTable {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 0.3rem 1.5rem;
+  align-items: center;
+  font-size: 1.05rem;
+}
+
+.bitHeader {
+  font-weight: bold;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--color-ghost);
+}
+
+.listItem {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.listItem::before {
+  content: "\00B7";
+  position: absolute;
+  left: 0;
+  color: var(--color-ghost);
+}
+
+.crossOverlay {
+  position: relative;
+}
+
+.crossOverlay::after {
+  content: "\2717";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  color: var(--color-result);
+  opacity: 0.7;
+}

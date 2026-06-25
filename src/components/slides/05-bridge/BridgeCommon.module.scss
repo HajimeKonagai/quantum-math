@@ -1,0 +1,133 @@
+.slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.twoCol {
+  display: flex;
+  gap: 2rem;
+  flex: 1;
+  align-items: center;
+}
+
+.graphArea {
+  flex: 1;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.infoArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.point {
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.note {
+  font-size: 0.9rem;
+  color: var(--color-ghost);
+  line-height: 1.6;
+}
+
+.equation {
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.highlightBox {
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--color-highlight);
+  border-radius: 6px;
+  font-size: 1.1rem;
+  color: var(--color-highlight);
+  text-align: center;
+}
+
+.bigText {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--color-highlight);
+  text-align: center;
+}
+
+.flowRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.1rem;
+}
+
+.flowArrow {
+  color: var(--color-ghost);
+  font-size: 1.3rem;
+}
+
+.flowBox {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-accent);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  color: var(--color-accent);
+  text-align: center;
+}
+
+.flowResult {
+  font-family: var(--font-mono);
+  font-weight: bold;
+}
+
+.phaseCircle {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.phaseRing {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.phaseArrow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 3px;
+  transform-origin: 0 50%;
+  background: var(--color-highlight);
+  border-radius: 2px;
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
